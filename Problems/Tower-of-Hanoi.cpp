@@ -1,24 +1,33 @@
-#include <iostream>
+#include <bits/stdc++.h>
 using namespace std;
+const int M = 1e9 + 7;
 
 void move(int n, int x,int y){
-    for (int i = n; i >= 1; i--) {
-        // move disk i from peg x to peg y
-        cout << x << " " << y << endl;
-        // move the remaining disks from the intermediate peg to peg y
-        if (i > 1) {
-            move(i-1, 6-x-y, y);
-        }
+    if(n==1){
+        cout<<x<<" "<<y<<endl;
+        return; 
     }
+    move(n-1,x ,  6-x-y);
+    cout<< x<<" "<<y<<endl;
+    move(n-1,6-x-y, y);
 }
 
 int main(){
+#ifndef ONLINE_JUDGE
+    freopen("input.in","r",stdin);
+    freopen("output.in","w",stdout);
+#endif
+ 
     int n;
-    cin >> n;
+    cin>>n;
 
-    long long num = (1 << (2*n)) - 1;
-    cout << num << endl;
-    move(n, 1, 3);
+    int m = n;
+    long long num = 0;
+    while(m--){
+        num = 2*num + 1;
+    }
+    cout<<num<<endl;
+    move(n,1,3);
 }
 
 //https://cses.fi/problemset/task/2165/
