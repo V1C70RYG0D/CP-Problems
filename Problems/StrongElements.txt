@@ -1,0 +1,45 @@
+problem link : https://www.codechef.com/problems/STRNG
+
+topics included : gcd, pre-computation
+
+code: 
+
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+
+void solve() {
+    ll n;
+    cin>>n;
+    vector<ll> a(n);
+    for(int i=0;i<n;i++)cin>>a[i];
+    vector<ll> prgcd(n,0),posgcd(n,0);
+    prgcd[0]=a[0];
+    posgcd[n-1]=a[n-1];
+    for(int i=1;i<n;i++){
+        prgcd[i]=__gcd(prgcd[i-1],a[i]);
+    }
+    for(int i=n-2;i>=0;i--){
+        posgcd[i]=__gcd(posgcd[i+1],a[i]);
+    }
+    ll ans=0;
+    if(posgcd[1]!=1)ans++;
+    if(prgcd[n-2]!=1)ans++;
+    for(int i=1;i<n-1;i++){
+        ll g=__gcd(prgcd[i-1],posgcd[i+1]);
+        if(g!=1)ans++;
+    }
+    cout<<ans<<"\n";
+}
+
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+    int t = 1;
+    cin>>t;
+    for (int i=1;i<=t;i++){
+        solve();
+    }
+    return 0;
+}
