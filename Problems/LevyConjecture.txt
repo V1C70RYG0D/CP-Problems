@@ -1,0 +1,52 @@
+problem link : https://www.codechef.com/problems/LEVY
+
+topics included : primes , sieve, pre-computation, Levy Conjecture
+
+code: 
+
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+
+vector<bool> isprime; //true=prime
+void primecheck(ll n){ 
+    isprime.clear();
+    isprime.assign(n+1,true);
+    isprime[0]=false;
+    isprime[1]=false;
+    for (ll i=2;i*i<=n;i++){
+        if (isprime[i]){
+            for (ll j=i*i;j<=n;j+=i) isprime[j]=false;
+        }
+    }
+}
+vector<ll> pr;
+vector<ll> ans(1e4+10,0);
+
+void solve() {
+    ll n;
+    cin>>n;
+    cout<<ans[n]<<"\n";
+}
+
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+    int t = 1;
+    primecheck(1e4+10);
+    for(int i=1;i<=1e4+9;i++){
+        if(isprime[i])pr.push_back(i);
+    }
+    for(int i=0;i<pr.size();i++){
+        for(int j=0;j<pr.size();j++){
+            if(pr[i]+2*pr[j]<ans.size())
+            ans[pr[i]+2*pr[j]]++;
+        }
+    }
+    cin>>t;
+    for (int i=1;i<=t;i++){
+        solve();
+    }
+    return 0;
+}
