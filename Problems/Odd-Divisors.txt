@@ -1,0 +1,43 @@
+problem link : https://www.codechef.com/problems/ODDDIV
+
+topics included : number theory, pre-computation
+
+code: 
+
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+
+vector<ll> A(1e5+10,0);
+
+void solve() {
+    ll l,r;
+    cin>>l>>r;
+    cout<<A[r]-A[l-1]<<"\n";
+}
+
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+    int t = 1;
+    for(int i=1;i<=1e5+9;i++){
+        ll s=0;
+        for(int j=1;j<=sqrt(i);j++){
+            if(i%j==0){
+                if(j&1)s+=j;
+                if((i/j)&1)s+=i/j;
+                if(j*j==i){
+                    if(j&1)s-=j;
+                }
+            }
+        }
+        A[i]=s;
+    }
+    for(int i=1;i<1e5+10;i++)A[i]+=A[i-1];
+    cin>>t;
+    for (int i=1;i<=t;i++){
+        solve();
+    }
+    return 0;
+}
