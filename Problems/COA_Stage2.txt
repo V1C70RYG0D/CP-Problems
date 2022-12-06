@@ -1,0 +1,122 @@
+problem link : https://www.codechef.com/problems/CAOS2
+
+topics included : number theory, sieve , prefix sum
+
+code: 
+
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+
+vector<bool> isprime; //true=prime
+void primecheck(ll n){ 
+    isprime.clear();
+    isprime.assign(n+1,true);
+    isprime[0]=false;
+    isprime[1]=false;
+    for (ll i=2;i*i<=n;i++){
+        if (isprime[i]){
+            for (ll j=i*i;j<=n;j+=i) isprime[j]=false;
+        }
+    }
+}
+
+vector<ll> pr;
+void solve() {
+    ll m,n;
+    cin>>m>>n;
+    vector<vector<char>> mp(m+2,vector<char> (n+2,'A'));
+    for(int i=1;i<=m;i++){
+        for(int j=1;j<=n;j++){
+            cin>>mp[i][j];
+        }
+    }
+    vector<vector<ll>> psl(m+2,vector<ll> (n+2,0));
+    vector<vector<ll>> psb(m+2,vector<ll> (n+2,0));
+    vector<vector<ll>> psr(m+2,vector<ll> (n+2,0));
+    vector<vector<ll>> pst(m+2,vector<ll> (n+2,0));
+    for(int i=0;i<=m+1;i++){
+        psl[i][0]=psl[i][n+1]=-1;
+        psr[i][0]=psr[i][n+1]=-1;
+        pst[i][0]=pst[i][n+1]=-1;
+        psb[i][0]=psb[i][n+1]=-1;
+    }
+    for(int i=0;i<=n+1;i++){
+        psl[0][i]=psl[m+1][i]=-1;
+        psr[0][i]=psr[m+1][i]=-1;
+        pst[0][i]=pst[m+1][i]=-1;
+        psb[0][i]=psb[m+1][i]=-1;
+    }
+    for(int i=1;i<=m;i++){
+        for(int j=1;j<=n;j++){
+            if(mp[i][j-1]=='^'){
+                psl[i][j]=psl[i][j-1]+1;
+            }
+            else{
+                psl[i][j]=0;
+            }
+        }
+    }
+    for(int i=1;i<=m;i++){
+        for(int j=n;j>=1;j--){
+            if(mp[i][j+1]=='^'){
+                psr[i][j]=psr[i][j+1]+1;
+            }
+            else{
+                psr[i][j]=0;
+            }
+        }
+    }
+    for(int i=1;i<=m;i++){
+        for(int j=1;j<=n;j++){
+            if(mp[i-1][j]=='^'){
+                pst[i][j]=pst[i-1][j]+1;
+            }
+            else{
+                pst[i][j]=0;
+            }
+        }
+    }
+    
+    for(int i=m;i>=1;i--){
+        for(int j=1;j<=n;j++){
+            if(mp[i+1][j]=='^'){
+                psb[i][j]=psb[i+1][j]+1;
+            }
+            else{
+                psb[i][j]=0;
+            }
+        }
+    }
+    ll ans=0,mn;
+    for(int i=1;i<=m;i++){
+        for(int j=1;j<=n;j++){
+            if(mp[i][j]=='^'){
+                mn=min({psl[i][j],psr[i][j],pst[i][j],psb[i][j]});
+                if(isprime[mn]){
+                    ans+=lower_bound(pr.begin(),pr.end(),mn)-pr.begin()+1;
+                }
+                else if(mn>=2){
+                    ans+=lower_bound(pr.begin(),pr.end(),mn)-pr.begin();
+                }
+            }
+        }
+    }
+    cout<<ans<<'\n';
+}
+
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+    primecheck(1000);
+    for(int i=0;i<1000;i++){
+        if(isprime[i])pr.push_back(i);
+    }
+    int t = 1;
+    cin>>t;
+    for (int i=1;i<=t;i++){
+        solve();
+    }
+    return 0;
+}
