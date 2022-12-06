@@ -1,0 +1,37 @@
+problem link : https://www.codechef.com/problems/OPTPAIRS?tab=statement
+
+topics included : number theory
+
+code: 
+
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+
+void solve() {
+    ll n;
+    set<ll>t,s;
+    cin>>n;
+    s.insert(1);
+    for(int i=2;i<=sqrt(n);i++){
+        if(n%i==0){
+            s.insert(i);
+            s.insert(n/i);
+        }
+    }
+    t=s;
+    for(auto &x : t)s.insert(n-x);
+    cout<<s.size()<<'\n';
+}
+
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+    int t = 1;
+    cin>>t;
+    for (int i=1;i<=t;i++){
+        solve();
+    }
+    return 0;
+}
